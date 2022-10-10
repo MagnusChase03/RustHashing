@@ -1,6 +1,22 @@
-use std::env;
+use std::{env, thread, fs};
 use std::sync::{Arc, Mutex};
-use std::thread;
+
+// Hash function
+fn hash(file_name: &String) -> u32 {
+
+    let contents = fs::read(file_name).expect("File not found");
+
+    // Add up all the bytes in file
+    let mut sum: u32 = 0;
+    for byte in &contents {
+
+        sum += *byte as u32;
+
+    }
+
+    sum
+
+}
 
 fn main() {
 
@@ -28,7 +44,7 @@ fn main() {
 
                 // Grab the next arg
                 let file = files.lock().unwrap().remove(0);
-                println!("{}", file);
+                println!("{} is {}", &file, hash(&file));
 
             });
 
